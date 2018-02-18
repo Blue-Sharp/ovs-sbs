@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:sec="http://www.springframework.org/security/tags"
+                template="../../templates/layout.xhtml">
+    <f:loadBundle basename="de.blue-sharp.sbs.ovs.mvc.messages" var="msg"/>
+    <ui:define name="west">
+        <p:tree id="accountNavigation" value="#{accountFilterViewBean.root}" var="node" selectionMode="single"
+                selection="#{accountFilterViewBean.selectedNode}" style="width: auto">
+            <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
+                <h:outputText value="#{node.name}"/>
+            </p:treeNode>
+        </p:tree>
+        <!-- TODO RKA Remove and replace with AJAX -->
+        <p:commandButton value="Display" update="msgs" icon="ui-icon-newwin"
+                         actionListener="#{accountFilterViewBean.displaySelectedSingle}"/>
+        <p:growl id="msgs" showDetail="true" escape="false"/>
+        <!-- TODO RKA Remove and replace with AJAX -->
+    </ui:define>
+    <ui:define name="center">
+        <p:dataTable id="accountList" var="account" value="#{accountListViewBean.accounts}" resizableColumns="true"
+                     draggableColumns="true" draggableRows="true"
+                     widgetVar="accountTable" multiViewState="true" rowKey="#{account.id}" selectionMode="single"
+                     selection="#{accountListViewBean.selectedAccount}"
+                     sortMode="multiple" rows="15" paginator="true" scrollable="true"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     rowsPerPageTemplate="10,15,25,50,100" emptyMessage="#{msg['action.search.empty']}"
+                     filteredValue="#{accountListViewBean.filteredAccounts}">
+            <f:facet name="header">
+                <p:outputPanel style="height: 30px;">
+                    <h:outputText value="#{msg['user']} #{msg['action.search']}"/>
+                    <p:outputPanel style="float: left">
+                        <p:commandButton id="toggler" type="button" value="#{msg['action.toggle.column']}"
+                                         icon="ui-icon-calculator"
+                                         style="float:left"/>
+                        <p:columnToggler datasource="accountList" trigger="toggler"/>
+                    </p:outputPanel>
+                    <p:outputPanel style="float: right">
+                        <h:outputText value="#{msg['action.search']}:"/>
+                        <p:inputText id="globalFilter" onkeyup="PF('accountTable').filter()"
+                                     placeholder="#{msg['action.search.placeholder']}"/>
+                    </p:outputPanel>
+                </p:outputPanel>
+            </f:facet>
+            <p:column toggleable="false" width="40">
+                <p:commandButton icon="ui-icon-search" title="#{msg['action.view']}">
+                    <f:setPropertyActionListener value="#{account}"
+                                                 target="#{accountListViewBean.selectedAccount}"/>
+                </p:commandButton>
+            </p:column>
+            <p:column toggleable="false" width="20">
+                <p:rowToggler/>
+            </p:column>
+            <p:rowExpansion>
+                <p:panelGrid columns="2" columnClasses="label,value">
+                    <h:outputText value="#{msg['user.id']}:"/>
+                    <h:outputText value="#{account.id}"/>
+
+                    <h:outputText value="#{msg['user.firstName']}"/>
+                    <h:outputText value="#{account.firstName}"/>
+
+                    <h:outputText value="#{msg['user.lastName']}"/>
+                    <h:outputText value="#{account.lastName}"/>
+
+                    <h:outputText value="#{msg['user.sex']}"/>
+                    <h:outputText value="#{msg[accountListViewBean.getMessageKey(account.sex)]}"/>
+
+                    <h:outputText value="#{msg['user.birthday']}"/>
+                    <h:outputText value="#{account.birthday}">
+                        <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    </h:outputText>
+
+                    <h:outputText value="#{msg['user.birthplace']}"/>
+                    <h:outputText value="#{account.birthplace}"/>
+
+                    <h:outputText value="#{msg['user.email']}"/>
+                    <h:outputText value="#{account.email}"/>
+
+                    <h:outputText value="#{msg['user.phone']}"/>
+                    <h:outputText value="#{account.phone}"/>
+
+                    <h:outputText value="#{msg['user.locale']}"/>
+                    <h:outputText value="#{account.locale.displayCountry}"/>
+
+                    <h:outputText value="#{msg['user.zip']}"/>
+                    <h:outputText value="#{account.zip}"/>
+
+                    <h:outputText value="#{msg['user.city']}"/>
+                    <h:outputText value="#{account.city}"/>
+
+                    <h:outputText value="#{msg['user.street']}"/>
+                    <h:outputText value="#{account.street}"/>
+
+                </p:panelGrid>
+            </p:rowExpansion>
+
+            <p:column headerText="#{msg['user.id']}" sortBy="#{account.id}" filterBy="#{account.id}"
+                      filterMatchMode="contains" width="120">
+                <h:outputText value="#{account.id}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['user.firstName']}" sortBy="#{account.firstName}"
+                      filterBy="#{account.firstName}" filterMatchMode="contains">
+                <h:outputText value="#{account.firstName}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['user.lastName']}" sortBy="#{account.lastName}"
+                      filterBy="#{account.lastName}" filterMatchMode="contains">
+                <h:outputText value="#{account.lastName}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['user.sex']}" sortBy="#{account.sex}" filterBy="#{account.sex}"
+                      filterMatchMode="in">
+                <f:facet name="filter">
+                    <p:selectCheckboxMenu label="#{msg['user.sex']}" onchange="PF('accountTable').filter()">
+                        <f:converter converterId="omnifaces.GenericEnumConverter"/>
+                        <f:selectItems value="#{accountListViewBean.sexes}" var="sex"
+                                       itemLabel="#{msg[accountListViewBean.getMessageKey(sex)]}"/>
+                    </p:selectCheckboxMenu>
+                </f:facet>
+                <h:outputText value="#{msg[accountListViewBean.getMessageKey(account.sex)]}"/>
+            </p:column>
+
+            <!-- TODO RKA fix filter calendar
+            https://stackoverflow.com/questions/28449822/primefaces-datatable-date-column-filter-by-calendar
+            http://huahsin68.blogspot.de/2015/05/calendar-input-in-data-table-filter.html
+            -->
+            <p:column headerText="#{msg['user.birthday']}" sortBy="#{account.birthday}"
+                      filterBy="#{account.birthday}" filterMatchMode="lte">
+                <f:facet name="filter">
+                    <p:calendar pattern="yyyy-MM-dd" navigator="true">
+                        <p:ajax event="dateSelect" oncomplete="PF('accountTable').filter()" update="accountList"/>
+                        <p:ajax event="change" execute="@this" oncomplete="PF('accountTable').filter()"
+                                update="accountList"/>
+                    </p:calendar>
+                </f:facet>
+                <h:outputText value="#{account.birthday}">
+                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                </h:outputText>
+            </p:column>
+
+            <p:column headerText="#{msg['user.birthplace']}" sortBy="#{account.birthplace}"
+                      filterBy="#{account.birthplace}" filterMatchMode="contains">
+                <h:outputText value="#{account.birthplace}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['user.email']}" sortBy="#{account.email}" filterBy="#{account.email}"
+                      filterMatchMode="contains">
+                <h:outputText value="#{account.email}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['user.phone']}" sortBy="#{account.phone}" filterBy="#{account.phone}"
+                      filterMatchMode="contains">
+                <h:outputText value="#{account.phone}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['user.locale']}" sortBy="#{account.locale.displayCountry}"
+                      filterBy="#{account.locale.displayCountry}" filterMatchMode="contains">
+                <h:outputText value="#{account.locale.displayCountry}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['user.zip']}" sortBy="#{account.zip}" filterBy="#{account.zip}"
+                      filterMatchMode="contains">
+                <h:outputText value="#{account.zip}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['user.city']}" sortBy="#{account.city}" filterBy="#{account.city}"
+                      filterMatchMode="contains">
+                <h:outputText value="#{account.city}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['user.street']}" sortBy="#{account.street}" filterBy="#{account.street}"
+                      filterMatchMode="contains">
+                <h:outputText value="#{account.street}"/>
+            </p:column>
+
+            <f:facet name="footer">
+                <p:commandButton process="accountList" icon="ui-icon-document" value="#{msg['action.new']}"
+                                 oncomplete=""/>
+                <p:commandButton process="accountList" icon="ui-icon-search" value="#{msg['action.view']}"
+                                 oncomplete=""/>
+            </f:facet>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>
