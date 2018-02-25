@@ -28,6 +28,7 @@ public class Account implements Serializable {
     private Long version;
 
     @OneToOne
+    @JoinColumn(name= "chairman_id", foreignKey = @ForeignKey(name = "FK_ACCOUNTS_CHAIRMEN"))
     private Chairman chairman;
 
     @Size(max = 50)

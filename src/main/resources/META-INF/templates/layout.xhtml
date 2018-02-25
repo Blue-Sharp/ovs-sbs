@@ -6,29 +6,41 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:pe="http://primefaces.org/ui/extensions"
-      xmlns:o="http://omnifaces.org/ui"
-      xmlns:sec="http://www.springframework.org/security/tags">
+>
 <f:view contentType="text/html">
     <h:head>
         <f:loadBundle basename="de.blue-sharp.sbs.ovs.mvc.messages" var="msg"/>
         <title>#{msg['application.title']}</title>
         <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
         <style type="text/css">
+            form {
+                height: inherit;
+                width: inherit;
+            }
             .ui-layout-north {
                 z-index: 20 !important;
                 overflow: visible !important;
             }
-
             .ui-layout-north .ui-layout-unit-content {
                 overflow: visible !important;
+            }
+            .ui-inherit {
+                height: inherit;
+                width: inherit;
+            }
+            .forty-percent {
+                width: 40%;
+            }
+
+            .sixty-percent {
+                width: 60%;
             }
         </style>
     </h:head>
     <h:body>
         <p:layout fullPage="true">
             <p:layoutUnit position="north" resizable="true">
-                <h:form>
+                <h:form id="north">
                     <p:menubar>
                         <p:menuitem value="#{msg['action.home']}" icon="ui-icon-home" action="home"/>
                         <p:submenu label="#{msg['user']}" icon="ui-icon-person">
@@ -56,7 +68,7 @@
 
                         <f:facet name="options">
                             <p:inputText style="margin-right:10px" placeholder="#{msg['action.search.placeholder']}"/>
-                            <p:commandButton value="#{msg['action.user-info']}" icon="ui-icon-person"
+                            <p:commandButton value="#{msg['action.userInfo']}" icon="ui-icon-person"
                                              action="user-info"/>
                             <p:commandButton value="#{msg['action.logout']}" icon="ui-icon-close" action="logout"/>
                         </f:facet>
@@ -66,7 +78,7 @@
 
             <p:layoutUnit position="south" header="#{msg['layout.debug']}" closable="true" collapsible="true"
                           resizable="true">
-                <h:form>
+                <h:form id="south">
                     <ui:insert name="south"/>
                     <ui:debug hotkey="x" rendered="#{facesContext.application.projectStage == 'Development'}"/>
                 </h:form>
@@ -74,20 +86,20 @@
 
             <p:layoutUnit position="west" header="#{msg['layout.navigation']}" size="180" closable="true"
                           collapsible="true" resizable="true">
-                <h:form>
+                <h:form id="west">
                     <ui:insert name="west"/>
                 </h:form>
             </p:layoutUnit>
 
-            <p:layoutUnit position="east" header="#{msg['layout.view']}" size="180" closable="true" resizable="true"
+            <p:layoutUnit position="east" header="#{msg['layout.view']}" size="400" closable="true" resizable="true"
                           collapsible="true">
-                <h:form>
+                <h:form id="east">
                     <ui:insert name="east"/>
                 </h:form>
             </p:layoutUnit>
 
             <p:layoutUnit position="center">
-                <h:form>
+                <h:form id="center">
                     <ui:insert name="center"/>
                 </h:form>
             </p:layoutUnit>

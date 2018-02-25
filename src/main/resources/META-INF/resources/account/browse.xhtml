@@ -10,17 +10,13 @@
                 template="../../templates/layout.xhtml">
     <f:loadBundle basename="de.blue-sharp.sbs.ovs.mvc.messages" var="msg"/>
     <ui:define name="west">
-        <p:tree id="accountNavigation" value="#{accountFilterViewBean.root}" var="node" selectionMode="single"
-                selection="#{accountFilterViewBean.selectedNode}" style="width: auto">
+        <p:tree id="accountNavigation" value="#{accountFilterViewBean.root}" var="node" selectionMode="multiple"
+                selection="#{accountFilterViewBean.selectedNode}" styleClass="ui-inherit">
+            <p:ajax event="select" listener="#{accountFilterViewBean.updateAccountList}" update=":center:accountList"/>
             <p:treeNode expandedIcon="ui-icon-folder-open" collapsedIcon="ui-icon-folder-collapsed">
                 <h:outputText value="#{node.name}"/>
             </p:treeNode>
         </p:tree>
-        <!-- TODO RKA Remove and replace with AJAX -->
-        <p:commandButton value="Display" update="msgs" icon="ui-icon-newwin"
-                         actionListener="#{accountFilterViewBean.displaySelectedSingle}"/>
-        <p:growl id="msgs" showDetail="true" escape="false"/>
-        <!-- TODO RKA Remove and replace with AJAX -->
     </ui:define>
     <ui:define name="center">
         <p:dataTable id="accountList" var="account" value="#{accountListViewBean.accounts}" resizableColumns="true"
@@ -47,60 +43,11 @@
                     </p:outputPanel>
                 </p:outputPanel>
             </f:facet>
-            <p:column toggleable="false" width="40">
-                <p:commandButton icon="ui-icon-search" title="#{msg['action.view']}">
-                    <f:setPropertyActionListener value="#{account}"
-                                                 target="#{accountListViewBean.selectedAccount}"/>
-                </p:commandButton>
-            </p:column>
-            <p:column toggleable="false" width="20">
-                <p:rowToggler/>
-            </p:column>
-            <p:rowExpansion>
-                <p:panelGrid columns="2" columnClasses="label,value">
-                    <h:outputText value="#{msg['user.id']}:"/>
-                    <h:outputText value="#{account.id}"/>
-
-                    <h:outputText value="#{msg['user.firstName']}"/>
-                    <h:outputText value="#{account.firstName}"/>
-
-                    <h:outputText value="#{msg['user.lastName']}"/>
-                    <h:outputText value="#{account.lastName}"/>
-
-                    <h:outputText value="#{msg['user.sex']}"/>
-                    <h:outputText value="#{msg[accountListViewBean.getMessageKey(account.sex)]}"/>
-
-                    <h:outputText value="#{msg['user.birthday']}"/>
-                    <h:outputText value="#{account.birthday}">
-                        <f:convertDateTime pattern="yyyy-MM-dd"/>
-                    </h:outputText>
-
-                    <h:outputText value="#{msg['user.birthplace']}"/>
-                    <h:outputText value="#{account.birthplace}"/>
-
-                    <h:outputText value="#{msg['user.email']}"/>
-                    <h:outputText value="#{account.email}"/>
-
-                    <h:outputText value="#{msg['user.phone']}"/>
-                    <h:outputText value="#{account.phone}"/>
-
-                    <h:outputText value="#{msg['user.locale']}"/>
-                    <h:outputText value="#{account.locale.displayCountry}"/>
-
-                    <h:outputText value="#{msg['user.zip']}"/>
-                    <h:outputText value="#{account.zip}"/>
-
-                    <h:outputText value="#{msg['user.city']}"/>
-                    <h:outputText value="#{account.city}"/>
-
-                    <h:outputText value="#{msg['user.street']}"/>
-                    <h:outputText value="#{account.street}"/>
-
-                </p:panelGrid>
-            </p:rowExpansion>
+            <p:ajax event="rowSelect" listener="#{accountListViewBean.onRowSelect}" update=":east:accountPreviewMasterData,
+             :east:accountPreviewTechnicalData"/>
 
             <p:column headerText="#{msg['user.id']}" sortBy="#{account.id}" filterBy="#{account.id}"
-                      filterMatchMode="contains" width="120">
+                      filterMatchMode="contains">
                 <h:outputText value="#{account.id}"/>
             </p:column>
 
@@ -114,41 +61,6 @@
                 <h:outputText value="#{account.lastName}"/>
             </p:column>
 
-            <p:column headerText="#{msg['user.sex']}" sortBy="#{account.sex}" filterBy="#{account.sex}"
-                      filterMatchMode="in">
-                <f:facet name="filter">
-                    <p:selectCheckboxMenu label="#{msg['user.sex']}" onchange="PF('accountTable').filter()">
-                        <f:converter converterId="omnifaces.GenericEnumConverter"/>
-                        <f:selectItems value="#{accountListViewBean.sexes}" var="sex"
-                                       itemLabel="#{msg[accountListViewBean.getMessageKey(sex)]}"/>
-                    </p:selectCheckboxMenu>
-                </f:facet>
-                <h:outputText value="#{msg[accountListViewBean.getMessageKey(account.sex)]}"/>
-            </p:column>
-
-            <!-- TODO RKA fix filter calendar
-            https://stackoverflow.com/questions/28449822/primefaces-datatable-date-column-filter-by-calendar
-            http://huahsin68.blogspot.de/2015/05/calendar-input-in-data-table-filter.html
-            -->
-            <p:column headerText="#{msg['user.birthday']}" sortBy="#{account.birthday}"
-                      filterBy="#{account.birthday}" filterMatchMode="lte">
-                <f:facet name="filter">
-                    <p:calendar pattern="yyyy-MM-dd" navigator="true">
-                        <p:ajax event="dateSelect" oncomplete="PF('accountTable').filter()" update="accountList"/>
-                        <p:ajax event="change" execute="@this" oncomplete="PF('accountTable').filter()"
-                                update="accountList"/>
-                    </p:calendar>
-                </f:facet>
-                <h:outputText value="#{account.birthday}">
-                    <f:convertDateTime pattern="yyyy-MM-dd"/>
-                </h:outputText>
-            </p:column>
-
-            <p:column headerText="#{msg['user.birthplace']}" sortBy="#{account.birthplace}"
-                      filterBy="#{account.birthplace}" filterMatchMode="contains">
-                <h:outputText value="#{account.birthplace}"/>
-            </p:column>
-
             <p:column headerText="#{msg['user.email']}" sortBy="#{account.email}" filterBy="#{account.email}"
                       filterMatchMode="contains">
                 <h:outputText value="#{account.email}"/>
@@ -157,11 +69,6 @@
             <p:column headerText="#{msg['user.phone']}" sortBy="#{account.phone}" filterBy="#{account.phone}"
                       filterMatchMode="contains">
                 <h:outputText value="#{account.phone}"/>
-            </p:column>
-
-            <p:column headerText="#{msg['user.locale']}" sortBy="#{account.locale.displayCountry}"
-                      filterBy="#{account.locale.displayCountry}" filterMatchMode="contains">
-                <h:outputText value="#{account.locale.displayCountry}"/>
             </p:column>
 
             <p:column headerText="#{msg['user.zip']}" sortBy="#{account.zip}" filterBy="#{account.zip}"
@@ -182,9 +89,60 @@
             <f:facet name="footer">
                 <p:commandButton process="accountList" icon="ui-icon-document" value="#{msg['action.new']}"
                                  oncomplete=""/>
-                <p:commandButton process="accountList" icon="ui-icon-search" value="#{msg['action.view']}"
-                                 oncomplete=""/>
             </f:facet>
         </p:dataTable>
+    </ui:define>
+    <ui:define name="east">
+        <p:fieldset id="accountPreviewMasterData" legend="#{msg['user.masterData']}" toggleable="true">
+            <p:panelGrid columns="2" columnClasses="forty-percent, sixty-percent" style="width: 100%">
+                <h:outputText value="#{msg['user.firstName']}"/>
+                <h:outputText value="#{accountPreviewViewBean.account.firstName}"/>
+
+                <h:outputText value="#{msg['user.lastName']}"/>
+                <h:outputText value="#{accountPreviewViewBean.account.lastName}"/>
+
+                <h:outputText value="#{msg['user.sex']}"/>
+                <h:outputText
+                        value="#{msg[accountPreviewViewBean.getMessageKey(accountPreviewViewBean.account.sex)]}"/>
+
+                <h:outputText value="#{msg['user.birthday']}"/>
+                <h:outputText value="#{accountPreviewViewBean.account.birthday}">
+                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                </h:outputText>
+
+                <h:outputText value="#{msg['user.birthplace']}"/>
+                <h:outputText value="#{accountPreviewViewBean.account.birthplace}"/>
+
+                <h:outputText value="#{msg['user.email']}"/>
+                <h:outputText value="#{accountPreviewViewBean.account.email}"/>
+
+                <h:outputText value="#{msg['user.phone']}"/>
+                <h:outputText value="#{accountPreviewViewBean.account.phone}"/>
+
+                <h:outputText value="#{msg['user.locale']}"/>
+                <h:outputText value="#{accountPreviewViewBean.account.locale.displayCountry}"/>
+
+                <h:outputText value="#{msg['user.zip']}"/>
+                <h:outputText value="#{accountPreviewViewBean.account.zip}"/>
+
+                <h:outputText value="#{msg['user.city']}"/>
+                <h:outputText value="#{accountPreviewViewBean.account.city}"/>
+
+                <h:outputText value="#{msg['user.street']}"/>
+                <h:outputText value="#{accountPreviewViewBean.account.street}"/>
+            </p:panelGrid>
+        </p:fieldset>
+        <p:fieldset id="accountPreviewTechnicalData" legend="#{msg['user.technicalData']}" toggleable="true">
+            <p:panelGrid columns="2" columnClasses="forty-percent, sixty-percent" style="width: 100%">
+                <h:outputText value="#{msg['user.id']}:"/>
+                <h:outputText value="#{accountPreviewViewBean.account.id}"/>
+
+                <h:outputText value="#{msg['user.version']}"/>
+                <h:outputText value="#{accountPreviewViewBean.account.version}"/>
+
+                <h:outputText value="#{msg['user.userName']}"/>
+                <h:outputText value="#{accountPreviewViewBean.account.userName}"/>
+            </p:panelGrid>
+        </p:fieldset>
     </ui:define>
 </ui:composition>

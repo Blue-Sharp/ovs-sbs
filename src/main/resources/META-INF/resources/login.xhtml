@@ -18,17 +18,19 @@
     <h:body>
         <div class="ui-fluid">
             <h:form prependId="false">
-                <p:outputLabel value="#{sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}"
-                               rendered="${!empty param['error']}"/>
-                <p:focus/>
-                <p:panelGrid columns="2" layout="grid">
-                    <h:outputText value="#{msg['authentication.userName']}:"/>
-                    <p:inputText id="username" value="pirat"/>
-                    <h:outputText value="#{msg['authentication.password']}:"/>
-                    <p:inputText id="password" value="123"/>
-                    <!--<p:password id="password" value=""/>-->
-                </p:panelGrid>
-                <p:commandButton id="submit" value="#{msg['action.login']}" ajax="false"/>
+                <h:panelGrid>
+                    <p:outputLabel value="#{sessionScope.SPRING_SECURITY_LAST_EXCEPTION.message}"
+                                   rendered="${!empty param['error']}"/>
+                    <p:focus/>
+                    <p:panelGrid columns="2">
+                        <h:outputText value="#{msg['authentication.userName']}:"/>
+                        <p:inputText id="username" value="pirat"/>
+                        <h:outputText value="#{msg['authentication.password']}:"/>
+                        <p:inputText id="password" value="123"/>
+                        <!--<p:password id="password" value=""/>-->
+                    </p:panelGrid>
+                    <p:commandButton id="submit" value="#{msg['action.login']}" ajax="false"/>
+                </h:panelGrid>
             </h:form>
         </div>
     </h:body>

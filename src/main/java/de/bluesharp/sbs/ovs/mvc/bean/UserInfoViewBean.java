@@ -5,14 +5,15 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
@@ -36,7 +37,31 @@ public class UserInfoViewBean implements Serializable {
         authentication = SecurityContextHolder.getContext().getAuthentication();
     }
 
-    public static String getMessageKey(@NotNull String authority) {
-        return String.format("authentication.authorities.%s", authority.toLowerCase());
+    public static String getMessageKey(@Nullable String authority) {
+        if (!StringUtils.isEmpty(authority)) {
+            switch (authority) {
+                case "ADMIN": {
+                    return "authentication.authorities.admin";
+                }
+                case "CHAIRMAN": {
+                    return "authentication.authorities.chairman";
+                }
+                case "MANAGER": {
+                    return "authentication.authorities.manager";
+                }
+                case "STUDENT": {
+                    return "authentication.authorities.student";
+                }
+                case "PARTNER": {
+                    return "authentication.authorities.partner";
+                }
+                default: {
+                    String msg = String.format("Authority has invalid value: %s", authority);
+                    throw new IllegalArgumentException(msg);
+                }
+            }
+        }else {
+            return "authentication.authorities.none";
+        }
     }
 }

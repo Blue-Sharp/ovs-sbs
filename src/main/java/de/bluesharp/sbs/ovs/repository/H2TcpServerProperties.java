@@ -20,7 +20,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import static org.h2.engine.Constants.DEFAULT_TCP_PORT;
 
-//@ConfigurationProperties(prefix = "spring.h2.tcp-server")
+@ConfigurationProperties(prefix = "spring.h2.tcp-server")
 public class H2TcpServerProperties {
     /**
      * Enable the console.

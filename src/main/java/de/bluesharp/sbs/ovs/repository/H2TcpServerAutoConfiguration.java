@@ -2,19 +2,23 @@ package de.bluesharp.sbs.ovs.repository;
 
 import lombok.val;
 import org.h2.tools.Server;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import static de.bluesharp.sbs.ovs.Application.Profile.LOCAL;
 import static org.h2.engine.Constants.DEFAULT_TCP_PORT;
 
-/*
-@Profile(LOCAL)
-@Configuration
-@ConditionalOnProperty(prefix = "spring.h2.tcp-server", name = "enabled", havingValue = "true")
-@EnableConfigurationProperties(H2TcpServerProperties.class)
-*/
+
+//@Profile(LOCAL)
+//@Configuration
+//@ConditionalOnProperty(prefix = "spring.h2.tcp-server", name = "enabled", havingValue = "true")
+//@EnableConfigurationProperties(H2TcpServerProperties.class)
 public class H2TcpServerAutoConfiguration {
 
     private final H2TcpServerProperties properties;
