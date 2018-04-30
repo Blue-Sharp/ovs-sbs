@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Random;
@@ -32,7 +34,7 @@ public class BoundedContextInitializer {
                     .firstName("Rafael")
                     .lastName("Kansy")
                     .sex(Sex.MALE)
-                    .birthday(Date.from(Instant.parse("1983-06-20T11:43:48.870Z")))
+                    .birthday(LocalDate.of(1983, 06, 20))
                     .birthplace("Krappitz")
                     .email("rafael.kansy@xxx-xxx.de")
                     .phone("+49 160 xx xx xx xx")
@@ -45,7 +47,6 @@ public class BoundedContextInitializer {
             repository.save(me);
 
             val dataFactory = new DataFactory();
-            val random = new Random();
 
             for (short i = 0; i < 64; i++) {
                 // Bug in DataFactory. See: https://github.com/andygibson/datafactory/pull/12
@@ -55,11 +56,11 @@ public class BoundedContextInitializer {
                 }
 
                 val account = Account.builder()
-                        .userName(dataFactory.getRandomText(8))
+                        .userName(dataFactory.getRandomText(50))
                         .firstName(dataFactory.getFirstName())
                         .lastName(dataFactory.getLastName())
-                        .sex(random.nextBoolean() ? Sex.MALE : Sex.FEMALE)
-                        .birthday(dataFactory.getBirthDate())
+                        .sex(dataFactory.chance(50) ? Sex.MALE : Sex.FEMALE)
+                        .birthday(dataFactory.getBirthDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
                         .birthplace(dataFactory.getCity())
                         .email(email)
                         .phone(dataFactory.getNumberText(8))

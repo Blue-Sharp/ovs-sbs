@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:o="http://omnifaces.org/ui"
+                xmlns:sec="http://www.springframework.org/security/tags"
+                template="../../templates/layout.xhtml">
+    <f:loadBundle basename="de.blue-sharp.sbs.ovs.mvc.messages" var="msg"/>
+    <ui:define name="center">
+        <p:messages closable="true" style="width: 99%" globalOnly="true">
+            <p:autoUpdate/>
+        </p:messages>
+
+        <p:fieldset id="master-data" legend="#{msg['user.masterData']}" toggleable="true">
+            <p:panelGrid columns="3" columnClasses="twenty-percent,thirty-percent,forty-percent" style="width: 99%">
+                <p:outputLabel for="firstName" value="#{msg['user.firstName']}"/>
+                <p:inputText id="firstName" value="#{accountEditViewBean.account.firstName}"/>
+                <p:message for="firstName"/>
+
+                <p:outputLabel for="lastName" value="#{msg['user.lastName']}"/>
+                <p:inputText id="lastName" value="#{accountEditViewBean.account.lastName}"/>
+                <p:message for="lastName"/>
+
+                <p:outputLabel for="sex" value="#{msg['user.sex']}"/>
+                <p:selectOneMenu id="sex" value="#{accountEditViewBean.account.sex}">
+                    <f:selectItems value="#{accountEditViewBean.sexes}" var="sex" itemValue="#{sex}" itemLabel="#{msg[accountEditViewBean.getMessageKey(sex)]}"/>
+                </p:selectOneMenu>
+                <p:message for="sex"/>
+
+                <p:outputLabel for="birthday" value="#{msg['user.birthday']}"/>
+                <p:calendar id="birthday" value="#{accountEditViewBean.account.birthday}" pattern="yyyy-MM-dd" mask="true" label="#{msg['user.birthday']}">
+                    <f:convertDateTime pattern="yyyy-MM-dd" type="localDate"/>
+                </p:calendar>
+                <p:message for="birthday"/>
+
+                <p:outputLabel for="birthplace" value="#{msg['user.birthplace']}"/>
+                <p:inputText id="birthplace" value="#{accountEditViewBean.account.birthplace}"/>
+                <p:message for="birthplace"/>
+
+                <p:outputLabel for="email" value="#{msg['user.email']}"/>
+                <p:inputText id="email" value="#{accountEditViewBean.account.email}"/>
+                <p:message for="email"/>
+
+                <p:outputLabel for="phone" value="#{msg['user.phone']}"/>
+                <p:inputText id="phone" value="#{accountEditViewBean.account.phone}"/>
+                <p:message for="phone"/>
+
+                <p:outputLabel for="locale" value="#{msg['user.locale']}"/>
+                <p:selectOneMenu id="locale" value="#{accountEditViewBean.account.locale}">
+                    <f:selectItems value="#{accountEditViewBean.locales}" var="locale" itemValue="#{locale}"
+                                   itemLabel="#{accountEditViewBean.getMessageKey(locale)}"/>
+                    <f:converter converterId="de.bluesharp.sbs.ovs.LocaleConverter"/>
+                </p:selectOneMenu>
+                <p:message for="locale"/>
+
+                <p:outputLabel for="zip" value="#{msg['user.zip']}"/>
+                <p:inputText id="zip" value="#{accountEditViewBean.account.zip}"/>
+                <p:message for="zip"/>
+
+                <p:outputLabel for="city" value="#{msg['user.city']}"/>
+                <p:inputText id="city" value="#{accountEditViewBean.account.city}"/>
+                <p:message for="city"/>
+
+                <p:outputLabel for="street" value="#{msg['user.street']}"/>
+                <p:inputText id="street" value="#{accountEditViewBean.account.street}"/>
+                <p:message for="street"/>
+            </p:panelGrid>
+        </p:fieldset>
+
+        <p:spacer/>
+
+        <p:fieldset id="technical-data" legend="#{msg['user.technicalData']}" toggleable="true">
+            <p:panelGrid columns="3" columnClasses="twenty-percent,thirty-percent,forty-percent" style="width: 99%">
+                <p:outputLabel for="userName" value="#{msg['user.userName']}"/>
+                <p:inputText id="userName" value="#{accountEditViewBean.account.userName}"/>
+                <p:message for="userName"/>
+            </p:panelGrid>
+        </p:fieldset>
+
+        <p:spacer/>
+
+        <p:toolbar style="width: 99%">
+            <f:facet name="right">
+                <p:commandButton value="#{msg['action.new']}" update="master-data,technical-data" validateClient="true"
+                                 actionListener="#{accountEditViewBean.createAccount}" icon="ui-icon-document"/>
+            </f:facet>
+        </p:toolbar>
+    </ui:define>
+</ui:composition>

@@ -3,13 +3,11 @@ package de.bluesharp.sbs.ovs.model;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Locale;
+
 
 @Data
 @EqualsAndHashCode(exclude = {"id", "version"})
@@ -17,7 +15,10 @@ import java.util.Locale;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Entity
-@Table(name = "ACCOUNTS")
+@Table(name = "ACCOUNTS", uniqueConstraints = {
+        @UniqueConstraint(columnNames = "userName", name = "UK_USER_NAME") ,
+        @UniqueConstraint(columnNames = "email", name = "UK_EMAIL"),
+})
 public class Account implements Serializable {
 
     @GeneratedValue
@@ -28,17 +29,17 @@ public class Account implements Serializable {
     private Long version;
 
     @OneToOne
-    @JoinColumn(name= "chairman_id", foreignKey = @ForeignKey(name = "FK_ACCOUNTS_CHAIRMEN"))
+    @JoinColumn(name = "chairman_id", foreignKey = @ForeignKey(name = "FK_ACCOUNTS_CHAIRMEN"))
     private Chairman chairman;
 
     @Size(max = 50)
-    @NotNull
+    @NotEmpty
     private String userName;
 
-    @NotNull
+    @NotEmpty
     private String firstName;
 
-    @NotNull
+    @NotEmpty
     private String lastName;
 
     @NotNull
@@ -46,29 +47,27 @@ public class Account implements Serializable {
 
     @Past
     @NotNull
-    // TODO RK LocalDateTime
-    // TODO RK UTC mapping in database
-    private Date birthday;
+    private LocalDate birthday;
 
-    @NotNull
+    @NotEmpty
     private String birthplace;
 
     @Email
-    @NotNull
+    @NotEmpty
     private String email;
 
-    @NotNull
+    @NotEmpty
     private String phone;
 
     @NotNull
     private Locale locale;
 
-    @NotNull
+    @NotEmpty
     private String zip;
 
-    @NotNull
+    @NotEmpty
     private String city;
 
-    @NotNull
+    @NotEmpty
     private String street;
 }

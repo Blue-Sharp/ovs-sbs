@@ -8,7 +8,7 @@ import java.io.Serializable;
 @SuppressWarnings("WeakerAccess")
 @AllArgsConstructor
 @Data
-public class AccountTreeNode implements Serializable {
+public class AccountTreeNodeSupportBean implements Serializable {
     enum AccountTreeNodeType {
         ALL,
         CHAIRMAN,

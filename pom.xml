@@ -8,7 +8,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>sbs</name>
+    <name>${project.artifactId}</name>
     <description>Studenten bilden Schüler - Online Verwaltungssystem</description>
 
     <parent>
@@ -23,8 +23,7 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
         <spring-boot.version>2.0.0.RELEASE</spring-boot.version>
-        <joinfaces.version>3.0.0.RC2-SNAPSHOT</joinfaces.version>
-        <primefaces-theme.version>1.0.10</primefaces-theme.version>
+        <joinfaces.version>3.0.2</joinfaces.version>
     </properties>
 
     <dependencyManagement>
@@ -88,7 +87,7 @@
         <dependency>
             <groupId>org.primefaces.themes</groupId>
             <artifactId>all-themes</artifactId>
-            <version>${primefaces-theme.version}</version>
+            <version>1.0.10</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -155,22 +154,6 @@
 
     <repositories>
         <repository>
-            <id>spring-snapshots</id>
-            <name>Spring Maven Snapshots Repository</name>
-            <url>https://repo.spring.io/snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
-            <id>spring-milestones</id>
-            <name>Spring Maven Milestones Repository</name>
-            <url>http://repo.spring.io/milestone</url>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-        <repository>
             <id>spring-releases</id>
             <name>Spring Maven Releases Repository</name>
             <url>http://repo.spring.io/release</url>
@@ -190,25 +173,17 @@
 
     <pluginRepositories>
         <pluginRepository>
-            <id>spring-snapshots</id>
-            <name>Spring Maven Snapshots Repository</name>
-            <url>https://repo.spring.io/snapshot</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
-        <pluginRepository>
-            <id>spring-milestones</id>
-            <name>Spring Maven Milestones Repository</name>
-            <url>https://repo.spring.io/milestone</url>
+            <id>spring-releases</id>
+            <name>Spring Maven Releases Repository</name>
+            <url>https://repo.spring.io/release</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>
         </pluginRepository>
         <pluginRepository>
-            <id>spring-releases</id>
-            <name>Spring Maven Releases Repository</name>
-            <url>https://repo.spring.io/release</url>
+            <id>primefaces-releases</id>
+            <name>PrimeFaces Maven Releases Repository</name>
+            <url>http://repository.primefaces.org</url>
             <snapshots>
                 <enabled>false</enabled>
             </snapshots>

@@ -6,13 +6,10 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.primefaces.event.SelectEvent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -42,7 +39,7 @@ public class AccountListViewBean implements Serializable {
     }
 
     @PostConstruct
-    public void init() {
+    private void init() {
         accounts = new ArrayList<>(accountService.getAccounts());
     }
 

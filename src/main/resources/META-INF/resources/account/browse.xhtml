@@ -43,8 +43,7 @@
                     </p:outputPanel>
                 </p:outputPanel>
             </f:facet>
-            <p:ajax event="rowSelect" listener="#{accountListViewBean.onRowSelect}" update=":east:accountPreviewMasterData,
-             :east:accountPreviewTechnicalData"/>
+            <p:ajax event="rowSelect" listener="#{accountListViewBean.onRowSelect}" update=":east:accountPreviewMasterData,:east:accountPreviewTechnicalData"/>
 
             <p:column headerText="#{msg['user.id']}" sortBy="#{account.id}" filterBy="#{account.id}"
                       filterMatchMode="contains">
@@ -85,11 +84,6 @@
                       filterMatchMode="contains">
                 <h:outputText value="#{account.street}"/>
             </p:column>
-
-            <f:facet name="footer">
-                <p:commandButton process="accountList" icon="ui-icon-document" value="#{msg['action.new']}"
-                                 oncomplete=""/>
-            </f:facet>
         </p:dataTable>
     </ui:define>
     <ui:define name="east">
@@ -102,12 +96,11 @@
                 <h:outputText value="#{accountPreviewViewBean.account.lastName}"/>
 
                 <h:outputText value="#{msg['user.sex']}"/>
-                <h:outputText
-                        value="#{msg[accountPreviewViewBean.getMessageKey(accountPreviewViewBean.account.sex)]}"/>
+                <h:outputText value="#{msg[accountPreviewViewBean.getMessageKey(accountPreviewViewBean.account.sex)]}"/>
 
                 <h:outputText value="#{msg['user.birthday']}"/>
                 <h:outputText value="#{accountPreviewViewBean.account.birthday}">
-                    <f:convertDateTime pattern="yyyy-MM-dd"/>
+                    <f:convertDateTime pattern="yyyy-MM-dd" type="localDate"/>
                 </h:outputText>
 
                 <h:outputText value="#{msg['user.birthplace']}"/>
@@ -132,6 +125,7 @@
                 <h:outputText value="#{accountPreviewViewBean.account.street}"/>
             </p:panelGrid>
         </p:fieldset>
+        <p:spacer />
         <p:fieldset id="accountPreviewTechnicalData" legend="#{msg['user.technicalData']}" toggleable="true">
             <p:panelGrid columns="2" columnClasses="forty-percent, sixty-percent" style="width: 100%">
                 <h:outputText value="#{msg['user.id']}:"/>

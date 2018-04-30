@@ -33,7 +33,7 @@ public class UserInfoViewBean implements Serializable {
     }
 
     @PostConstruct
-    public void init() {
+    private void init() {
         authentication = SecurityContextHolder.getContext().getAuthentication();
     }
 

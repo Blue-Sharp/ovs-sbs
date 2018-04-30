@@ -37,4 +37,8 @@ public class AccountService {
         repository.findAll(Example.of(example)).forEach(result::add);
         return result;
     }
+
+    public Account save(Account account){
+        return repository.save(account);
+    }
 }

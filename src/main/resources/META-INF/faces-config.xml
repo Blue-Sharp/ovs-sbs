@@ -16,6 +16,10 @@
         </resource-bundle>
     </application>
 
+    <factory>
+        <exception-handler-factory>org.omnifaces.exceptionhandler.FacesMessageExceptionHandlerFactory</exception-handler-factory>
+    </factory>
+
     <navigation-rule>
         <from-view-id>*</from-view-id>
         <navigation-case>
@@ -31,6 +35,11 @@
         <navigation-case>
             <from-outcome>logout</from-outcome>
             <to-view-id>/logout.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>accounts-new</from-outcome>
+            <to-view-id>/account/edit.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>

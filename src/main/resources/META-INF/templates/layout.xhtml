@@ -28,10 +28,15 @@
                 height: inherit;
                 width: inherit;
             }
+            .twenty-percent {
+                width: 30%;
+            }
+            .thirty-percent {
+                width: 30%;
+            }
             .forty-percent {
                 width: 40%;
             }
-
             .sixty-percent {
                 width: 60%;
             }
@@ -44,7 +49,7 @@
                     <p:menubar>
                         <p:menuitem value="#{msg['action.home']}" icon="ui-icon-home" action="home"/>
                         <p:submenu label="#{msg['user']}" icon="ui-icon-person">
-                            <p:menuitem value="#{msg['action.new']}" icon="ui-icon-document" action="accounts-browse"/>
+                            <p:menuitem value="#{msg['action.new']}" icon="ui-icon-document" action="accounts-new"/>
                             <p:menuitem value="#{msg['action.browse']}" icon="ui-icon-search" action="accounts-browse"/>
                         </p:submenu>
 
