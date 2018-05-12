@@ -4,10 +4,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:pe="http://primefaces.org/ui/extensions"
-                xmlns:o="http://omnifaces.org/ui"
-                xmlns:sec="http://www.springframework.org/security/tags"
-                template="../../templates/layout.xhtml">
+                template="../../templates/extended-layout.xhtml">
     <f:loadBundle basename="de.blue-sharp.sbs.ovs.mvc.messages" var="msg"/>
     <ui:define name="west">
         <p:tree id="accountNavigation" value="#{accountFilterViewBean.root}" var="node" selectionMode="multiple"

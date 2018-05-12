@@ -1,0 +1,27 @@
+form {
+    height: inherit;
+    width: inherit;
+}
+.ui-layout-north {
+    z-index: 20 !important;
+    overflow: visible !important;
+}
+.ui-layout-north .ui-layout-unit-content {
+    overflow: visible !important;
+}
+.ui-inherit {
+    height: inherit;
+    width: inherit;
+}
+.twenty-percent {
+    width: 30%;
+}
+.thirty-percent {
+    width: 30%;
+}
+.forty-percent {
+    width: 40%;
+}
+.sixty-percent {
+    width: 60%;
+}
