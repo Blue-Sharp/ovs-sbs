@@ -11,7 +11,7 @@ Studenten bilden Schüler (SBS) Online-Verwaltungsssystem (OVS) und API
 ```bash
 git clone https://github.com/Blue-Sharp/sbs.git
 cd sbs
-mvn clean install
+mvn clean install # or use the provided wrapper mvnw
 ```
 Start Application
 ```bash
