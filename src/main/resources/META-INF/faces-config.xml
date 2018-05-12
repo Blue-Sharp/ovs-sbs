@@ -38,7 +38,7 @@
             <redirect/>
         </navigation-case>
         <navigation-case>
-            <from-outcome>accounts-new</from-outcome>
+            <from-outcome>accounts-save</from-outcome>
             <to-view-id>/account/edit.xhtml</to-view-id>
             <redirect/>
         </navigation-case>

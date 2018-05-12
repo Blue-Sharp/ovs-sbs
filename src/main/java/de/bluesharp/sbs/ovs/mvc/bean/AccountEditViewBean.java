@@ -3,38 +3,37 @@ package de.bluesharp.sbs.ovs.mvc.bean;
 import de.bluesharp.sbs.ovs.model.Account;
 import de.bluesharp.sbs.ovs.model.Sex;
 import de.bluesharp.sbs.ovs.service.AccountService;
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
-import org.omnifaces.util.Exceptions;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import javax.faces.FacesException;
-import javax.faces.view.ViewScoped;
+import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Locale;
-
-import static org.omnifaces.util.Exceptions.unwrap;
+import java.util.Objects;
 
 @SuppressWarnings("CdiManagedBeanInconsistencyInspection")
 @Component
-@ViewScoped
+@SessionScoped
 @Data
 @Slf4j
 public class AccountEditViewBean implements UserSexI18nSupportBean, Serializable {
     private Account account;
 
+    public void setAccount(Account account) {
+        if (Objects.isNull(account)) {
+            this.account = Account.builder().build();
+        } else {
+            this.account = account;
+        }
+    }
+
     private Sex[] sexes = {Sex.MALE, Sex.FEMALE};
     private Locale[] locales = {Locale.GERMANY};
 
-    @Getter(value = AccessLevel.NONE)
     private final AccountService accountService;
 
     @Autowired
@@ -44,8 +43,8 @@ public class AccountEditViewBean implements UserSexI18nSupportBean, Serializable
 
     @PostConstruct
     private void init() {
-        //account = Account.builder().build();
-        account = Account.builder()
+        this.account = Account.builder().build();
+/*        account = Account.builder()
                 .userName("pirat")
                 .firstName("Rafael")
                 .lastName("Kansy")
@@ -58,10 +57,10 @@ public class AccountEditViewBean implements UserSexI18nSupportBean, Serializable
                 .zip("80939")
                 .city("München")
                 .street("XXX XXX xx")
-                .build();
+                .build();*/
     }
 
-    public void createAccount() {
+    public void saveAccount() {
         accountService.save(this.account);
     }
 
