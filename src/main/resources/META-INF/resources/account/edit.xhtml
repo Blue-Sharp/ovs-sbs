@@ -80,8 +80,8 @@
 
         <p:toolbar style="width: 99%">
             <f:facet name="right">
-                <p:commandButton value="#{msg['action.new']}" update="master-data,technical-data" validateClient="true"
-                                 actionListener="#{accountEditViewBean.createAccount}" icon="ui-icon-document"/>
+                <p:commandButton value="#{msg['action.save']}" update="master-data,technical-data" validateClient="true"
+                                 actionListener="#{accountEditViewBean.saveAccount}" icon="ui-icon-document" action="accounts-browse"/>
             </f:facet>
         </p:toolbar>
     </ui:define>
