@@ -31,14 +31,11 @@ public class AccountService {
         return new HashSet<>(repository.findByChairmanIsNotNull());
     }
 
-    public Set<Account> getByExample(Account example) {
-        val result = new HashSet<Account>();
-
-        repository.findAll(Example.of(example)).forEach(result::add);
-        return result;
+    public long countByExample(Account example) {
+        return repository.count(Example.of(example));
     }
 
-    public Account save(Account account){
+    public Account save(Account account) {
         return repository.save(account);
     }
 }

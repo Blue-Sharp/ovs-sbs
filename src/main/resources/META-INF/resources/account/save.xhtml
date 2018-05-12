@@ -6,9 +6,7 @@
                 template="../../templates/simple-layout.xhtml">
     <f:loadBundle basename="de.blue-sharp.sbs.ovs.mvc.messages" var="msg"/>
     <ui:define name="center">
-        <p:messages closable="true" style="width: 99%" globalOnly="true">
-            <p:autoUpdate/>
-        </p:messages>
+        <p:messages closable="true" style="width: 99%" globalOnly="true" autoUpdate="true" showSummary="true"/>
 
         <p:fieldset id="master-data" legend="#{msg['user.masterData']}" toggleable="true">
             <p:panelGrid columns="3" columnClasses="twenty-percent,thirty-percent,forty-percent" style="width: 99%">
@@ -81,7 +79,7 @@
         <p:toolbar style="width: 99%">
             <f:facet name="right">
                 <p:commandButton value="#{msg['action.save']}" update="master-data,technical-data" validateClient="true"
-                                 actionListener="#{accountEditViewBean.saveAccount}" icon="ui-icon-document" action="accounts-browse"/>
+                                 action="#{accountEditViewBean.saveAccount}" icon="ui-icon-document" />
             </f:facet>
         </p:toolbar>
     </ui:define>
