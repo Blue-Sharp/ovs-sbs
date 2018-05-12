@@ -39,7 +39,7 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>accounts-save</from-outcome>
-            <to-view-id>/account/edit.xhtml</to-view-id>
+            <to-view-id>/account/save.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
         <navigation-case>
